@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # Internal Apps
     'credit_cards',
+    # External Apps
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
