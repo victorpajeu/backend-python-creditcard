@@ -17,5 +17,5 @@ class CreditCardSerializer(serializers.ModelSerializer):
 
     def validate_number(self, value):
         if not CreditCard(value).is_valid():
-            raise serializers.ValidationError("Número de cartão de crédito inválido.")
+            raise serializers.ValidationError("Invalid credit card number.")
         return encrypt(value)
