@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django_cryptography.fields import encrypt
 
 # Models
 from creditcard import CreditCard
@@ -13,3 +14,8 @@ class CreditCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreditCard
         fields = ('holder', 'number', 'cvv', 'brand', 'exp_date')
+
+    def validate_number(self, value):
+        if not CreditCard(value).is_valid():
+            raise serializers.ValidationError("Número de cartão de crédito inválido.")
+        return encrypt(value)
