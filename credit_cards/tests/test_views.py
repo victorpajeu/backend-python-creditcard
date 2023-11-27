@@ -53,3 +53,32 @@ class CreditCardViewSetTest(TestCase):
         self.assertEqual(new_credit_card_data['number'], response.data['number'])
         self.assertEqual(new_credit_card_data['cvv'], response.data['cvv'])
         self.assertEqual(new_credit_card_data['exp_date'], response.data['exp_date'])
+
+    def test_try_create_credit_card_invalid_number_authenticated(self):
+        new_credit_card_data = {
+            'holder': 'Create User',
+            'number': '123546854654657987',
+            'cvv': 789,
+            'exp_date': '02/2030'
+        }
+        response = self.client.post('/api/v1/credit-card/',
+                                    data=json.dumps(new_credit_card_data),
+                                    content_type='application/json',
+                                    HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+    def test_try_create_credit_card_invalid_exp_date_authenticated(self):
+        new_credit_card_data = {
+            'holder': 'Create User',
+            'number': '123546854654657987',
+            'cvv': 789,
+            'exp_date': '02/2012'
+        }
+        response = self.client.post('/api/v1/credit-card/',
+                                    data=json.dumps(new_credit_card_data),
+                                    content_type='application/json',
+                                    HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
