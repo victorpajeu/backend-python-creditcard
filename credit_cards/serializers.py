@@ -1,10 +1,10 @@
 import calendar
 from datetime import datetime
 from rest_framework import serializers
-
+from creditcard import CreditCard as validate_card
 
 # Models
-from creditcard import CreditCard
+from credit_cards.models import CreditCard
 
 class CreditCardSerializer(serializers.Serializer):
     holder = serializers.CharField(min_length=3)
@@ -14,7 +14,7 @@ class CreditCardSerializer(serializers.Serializer):
     exp_date = serializers.DateField(format='%m/%Y', input_formats=['%m/%Y'])
 
     def create(self, data):
-        cc = CreditCard(data.get('number'))
+        cc = validate_card(data.get('number'))
         if cc.is_valid():
             data['brand'] = cc.get_brand()
             exp_date = data['exp_date']
